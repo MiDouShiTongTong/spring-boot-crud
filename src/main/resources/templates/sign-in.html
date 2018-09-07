@@ -1,0 +1,42 @@
+<!doctype html>
+<!--suppress ALL-->
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" th:href="@{/images/favicon.ico}">
+
+	<title>Signin Template for Bootstrap</title>
+
+	<!-- Bootstrap core CSS -->
+	<link th:href="@{/webjars/bootstrap/4.1.2/css/bootstrap.css}" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link th:href="@{/css/signin.css}" rel="stylesheet">
+</head>
+
+<body class="text-center">
+<form class="form-signin" th:action="@{/admin/service/account/signIn}" method="post">
+	<img class="mb-4" th:src="@{/images/bootstrap-solid.svg}" alt="" width="72" height="72">
+	<h1 class="h3 mb-3 font-weight-normal" th:text="#{signIn.tip}"></h1>
+	<p class="text-danger" th:if="${not #strings.isEmpty(message)}" th:text="${message}"></p>
+	<label for="inputUsername" class="sr-only" th:text="#{signIn.username}"></label>
+	<input type="text" name="username" id="inputUsername" class="form-control" th:placeholder="#{signIn.username}" required autofocus>
+	<label for="inputPassword" class="sr-only" th:text="#{signIn.password}"></label>
+	<input type="password" name="password" id="inputPassword" class="form-control" th:placeholder="#{signIn.password}" required>
+	<div class="checkbox mb-3">
+		<label>
+			<input type="checkbox" value="remember-me"> [[#{signIn.remember}]]
+		</label>
+	</div>
+	<button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{signIn.signIn}"></button>
+	<p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+	<p>
+		<a class="btn btn-sm" th:href="@{${#httpServletRequest.requestURI}(l=zh_CN)}">中文</a>
+		<a class="btn btn-sm ml-2" th:href="@{${#httpServletRequest.requestURI}(l=en_US)}">英文</a>
+	</p>
+</form>
+</body>
+</html>

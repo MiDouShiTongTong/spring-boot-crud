@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+<h2 th:if="${myException} != null" th:text="${myException.errorMessage}"></h2>
+<p>timestamp: [[${timestamp}]]</p>
+<p>[[${message}]]</p>
+<p>[[status]]</p>
+</body>
+</html>

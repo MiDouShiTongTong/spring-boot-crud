@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" th:href="@{/images/favicon.ico}">
+
+	<title>Dashboard Template for Bootstrap</title>
+
+	<!-- Bootstrap core CSS -->
+	<link th:href="@{/webjars/bootstrap/4.1.2/css/bootstrap.css}" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
+
+<body>
+<!-- 引入 top nav -->
+<div th:replace="commons/nav :: topNav"></div>
+
+<div class="container-fluid">
+	<div class="row">
+		<!-- 引入 left nav -->
+		<div th:replace="commons/nav :: .sidebar(activeUri='employees')"></div>
+
+		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+			<div class="breadcrumb mt-4">
+				<li class="breadcrumb-item active">
+					<a th:href="@{/admin/employees}">员工管理</a>
+				</li>
+				<li class="breadcrumb-item active" th:text="${employee != null}? 修改员工 : 添加员工">
+				</li>
+			</div>
+			<form method="post" th:action="${employee != null} ? @{/admin/employee/} + ${employee.id} : @{/admin/employee}">
+				<!--
+					1.SpringMVC配置HiddenHttpMethodFilter;(Spring Boot自动配置)
+					2.页面创建post表单
+					3.创建input name="_method"的提交方式
+				-->
+				<input type="hidden" name="_method" th:value="put" th:if="${employee != null}">
+				<input type="hidden" name="id" th:value="${employee.id}" th:if="${employee != null}">
+				<div class="form-group row">
+					<label for="lastName" class="col-sm-2 col-form-label text-sm-right">lastName</label>
+					<div class="col-sm-10">
+						<input type="text" name="lastName" class="form-control" id="lastName" th:value="${employee != null} ? ${employee.lastName}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="email" class="col-sm-2 col-form-label text-sm-right">email</label>
+					<div class="col-sm-10">
+						<input type="text" name="email" class="form-control" id="email" th:value="${employee != null} ? ${employee.email}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label text-sm-right">gender</label>
+					<div class="col-sm-10 d-flex align-items-center">
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" name="gender" id="men" class="custom-control-input" value="1" th:checked="${employee != null} ? ${employee.gender} == 1">
+							<label class="custom-control-label" for="men">男</label>
+						</div>
+						<div class="custom-control custom-radio custom-control-inline">
+							<input type="radio" name="gender" id="female" class="custom-control-input" value="0" th:checked="${employee != null} ? ${employee.gender} == 0">
+							<label class="custom-control-label" for="female">女</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="department" class="col-sm-2 col-form-label text-sm-right">department</label>
+					<div class="col-sm-10">
+						<select name="department.id" class="form-control" id="department">
+							<option th:each="department : ${departments}" th:value="${department.id}" th:text="${department.departmentName}" th:selected="${employee != null} ? ${employee.department.id} == ${department.id}">1</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="birth" class="col-sm-2 col-form-label text-sm-right">birth</label>
+					<div class="col-sm-10">
+						<input type="text" name="birth" class="form-control" id="birth" th:value="${employee != null} ? ${#dates.format(employee.birth, 'yyyy-MM-dd HH:mm:ss')}">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="birth" class="col-sm-2 col-form-label text-sm-right"></label>
+					<div class="col-sm-10">
+						<button type="submit" class="btn btn-primary">提交</button>
+					</div>
+				</div>
+			</form>
+		</main>
+	</div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script th:src="@{/webjars/bootstrap/4.1.2/js/bootstrap.min.js}"></script>
+
+<!-- Icons -->
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+    feather.replace();
+</script>
+</body>
+</html>

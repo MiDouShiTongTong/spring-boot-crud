@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link rel="icon" th:href="@{/images/favicon.ico}">
+
+	<title>Dashboard Template for Bootstrap</title>
+
+	<!-- Bootstrap core CSS -->
+	<link th:href="@{/webjars/bootstrap/4.1.2/css/bootstrap.css}" rel="stylesheet">
+
+	<!-- Custom styles for this template -->
+	<link th:href="@{/css/dashboard.css}" rel="stylesheet">
+</head>
+
+<body>
+<!-- 引入 top nav -->
+<div th:replace="commons/nav :: topNav"></div>
+
+<div class="container-fluid">
+	<div class="row">
+		<!-- 引入 left nav -->
+		<div th:replace="commons/nav :: .sidebar(activeUri='employees')"></div>
+
+		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+			<div class="breadcrumb mt-4">
+				<li class="breadcrumb-item active">
+					<a th:href="@{/admin/employees}">员工管理</a>
+				</li>
+				<li class="breadcrumb-item active">员工列表</li>
+			</div>
+			<div class="pb-3">
+				<a class="btn btn-sm btn-success" th:href="@{/admin/employee}">添加</a>
+			</div>
+			<div class="table-responsive">
+				<table class="table table-striped table-sm">
+					<thead>
+					<tr>
+						<th>#</th>
+						<th>lastName</th>
+						<th>email</th>
+						<th>gender</th>
+						<th>department</th>
+						<th>birth</th>
+						<th>操作</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="employee : ${employees}">
+						<td th:text="${employee.id}"></td>
+						<td th:text="${employee.lastName}"></td>
+						<td th:text="${employee.email}"></td>
+						<td th:text="${employee.gender} == 1 ? '男' : '女'"></td>
+						<td th:text="${employee.department.departmentName}"></td>
+						<td th:text="${#dates.format(employee.birth, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						<td>
+							<a class="btn btn-sm btn-primary" th:href="@{/admin/employee/} + ${employee.id}">编辑</a>
+							<button type="button" class="btn btn-sm btn-danger delete" th:attr="deleteURL=@{/admin/employee/} + ${employee.id}">删除</button>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</main>
+		<form method="POST" id="delete-form">
+			<input type="hidden" name="_method" value="DELETE">
+			<!--<input type="hidden" name="id" th:value="${employee.id}">-->
+		</form>
+	</div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script th:src="@{/webjars/jquery/3.3.1/jquery.min.js}"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script th:src="@{/webjars/bootstrap/4.1.2/js/bootstrap.min.js}"></script>
+
+<!-- Icons -->
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+<script>
+    feather.replace();
+</script>
+<script>
+	var event = {
+	    init: function () {
+		    $('.delete').on('click', event.delete);
+        },
+	    delete: function () {
+	        $('#delete-form').attr('action', $(this).attr('deleteURL')).submit();
+        }
+	};
+
+	event.init();
+</script>
+</body>
+</html>
